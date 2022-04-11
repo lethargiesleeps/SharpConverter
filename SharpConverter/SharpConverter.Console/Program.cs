@@ -1,8 +1,7 @@
 ﻿using SharpConverter.Shared.Util;
+using SharpConverter.Shared.Util.MenuManagement;
 
 NumberSystemConverter numberSystemConverter = new();
-MenuManager menuManager = new SharpConverter.Shared.Util.MenuManager(true, numberSystemConverter);
+MenuManager menuManager = new(true, numberSystemConverter);
 
-Console.WriteLine("Enter a decimal value.");
-string input = Console.ReadLine();
-Console.WriteLine(numberSystemConverter.DecimalToBinary(input));
+menuManager.ConsoleMenuLoop();
