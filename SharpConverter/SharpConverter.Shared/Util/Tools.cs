@@ -44,5 +44,9 @@ namespace SharpConverter.Shared.Util
 
             return returnValue;
         }
+        public static string[] SplitonversionCommand(string input)
+        {
+
+        }
     }
 }

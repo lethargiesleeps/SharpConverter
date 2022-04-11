@@ -8,9 +8,6 @@ namespace SharpConverter.Shared.Util.MenuManagement
 {
     public class MenuManager
     {
-
-        public string? Input { get; private set; }
-        public string? Output { get; private set; }
         public bool IsConsole { get; private set; }
         public bool InNavigation { get; private set; }
         public MenuState MenuState { get; private set; }
@@ -46,94 +43,36 @@ namespace SharpConverter.Shared.Util.MenuManagement
         {
             do
             {
-                Console.Clear();
-                switch (MenuState)
-                {
-                    case MenuState.Default:
-                        Console.WriteLine(MenuHeader());
-                        Input = Console.ReadLine();
-                        if (Input == null)
-                            Input = "";
-                        MenuState = DefaultMenuHandling(Input);
-                        break;
 
-                    case MenuState.Exit:
-                        Console.WriteLine(ThankYouMessage());
-                        Console.ReadKey();
-                        Environment.Exit(0);
-                        break;
-
-                    case MenuState.Error:
-                        Console.WriteLine(GetErrorMessage());
-                        Console.ReadKey();
-                        MenuState = MenuState.Default;
-                        break;
-
-                    case MenuState.Help:
-                        break;
-
-                    case MenuState.NSCMenu:
-                        Console.WriteLine(NSCMenu());
-                        Input = Console.ReadLine();
-                        if (Input is null)
-                            Input = "";
-                        Console.WriteLine(NSCOperation(Input));
-                        break;
-                    case MenuState.IEEEMenu:
-                        break;
-                    case MenuState.UnicodeMenu:
-                        break;
-                    default:
-                        break;
-                }
             } while (InNavigation);
-            
-            
-                
         }
         #region Assets
        
-        private MenuState DefaultMenuHandling(string input)
+        //To complicated
+        public string[] NSCOperation(string input)
         {
-            MenuState menuState;
-            switch (input)
-            {
-                case "1":
-                    menuState = MenuState.NSCMenu;
-                    break;
-                case "2":
-                    menuState = MenuState.IEEEMenu;
-                    break;
-                case "3":
-                    menuState = MenuState.UnicodeMenu;
-                    break;
-                case "4":
-                    menuState = MenuState.Exit;
-                    break;
-                default:
-                    menuState = MenuState.Error;
-                    break;
-            }
-            return menuState;
-        }
-        private string NSCOperation(string input)
-        {
-            
+            #region StringManipulation
             string trimmedCommand = "";
-            string from = "";
-            string to = "";
+            string[] fromXToY = new string[2];
 
             //TODO: Add arguments
             string arguments = "";
             bool isValid = false;
 
-            //Checks if valid
-            if (input.Contains("=>"))
+            //Checks if valid based on proper usage of =>, and minimum needed characters in input (4)
+            if (input.Contains("=>") || input.Length > 4)
                 isValid = true;
 
             //Throw if invalid
             if (!isValid)
+            {
+                fromXToY[0] = "Nope";
+                fromXToY[1] = "Sorry";
                 MenuState = MenuState.Error;
+                return fromXToY;
+                
+            }
+                
 
             //If input has arguments...
             if(input.Contains('|'))
@@ -155,68 +94,21 @@ namespace SharpConverter.Shared.Util.MenuManagement
             {
                 if (!c.Equals(' ') || !c.Equals('\n') || !c.Equals('\t'))
                     trimmedCommand += c;
-                
             }
 
+            //Get command parameters
+            fromXToY = trimmedCommand.Split(new char[2] { '=', '>'}, StringSplitOptions.TrimEntries);
+
+            //Change whitespace to avoid confusion in loops
             
+            #endregion
+            if (fromXToY is null)
+                throw new NullReferenceException("Hmmm something went wrong... In MenuManager @ Line 173");
 
-            
-            
-
-            //return MenuState;
-        }
-        private static string NSCMenu()
-        {
-            string header = $"||=================#Converter-v0.1=================||" +
-                           "\n|| SELECT A COVERSION TYPE:                        ||" +
-                           "\n||=================================================||" +
-                           "\n|| HOW IT WORKS:                                   ||" +
-                           "\n|| Type the first letter of the system you'd like  ||" +
-                           "\n|| to convert from, followed by '=>', and the      ||" +
-                           "\n|| first letter of the system you'd like to        ||" +
-                           "\n|| to convert to.                                  ||" +
-                           "\n|| Add any arguments following a pipe '|'          ||" +
-                           "\n|| For a list of available commands type 'help'.   ||" +
-                           "\n||                                                 ||" +
-                           "\n|| Example: For decimal to binary                  ||" +
-                           "\n|| d => b                                          ||" +
-                           "\n||                                                 ||" +
-                           "\n|| Example: Octal to Hex, split by nibbles         ||" +
-                           "\n|| o => h | -n                                     ||" +
-                           "\n||                                                 ||" +
-                           "\n||_________________________________________________||" +
-                           "\n||=================================================||" +
-                           "\n\nCOMMAND: ";
-
-            return header;
-        }
-        private static string MenuHeader()
-        {
-            string header = $"||=================#Converter-v0.1=================||" +
-                           "\n|| SELECT A COVERSION TYPE:                        ||" +
-                           "\n||=================================================||" +
-                           "\n|| 1. Number System Conversions                    ||" +
-                           "\n|| 2. IEEE 754 Single Precision                    ||" +
-                           "\n|| 3. UNICODE and ASCII Conversions                ||" +
-                           "\n|| 4. Exit Program                                 ||" +
-                           "\n||_________________________________________________||" +
-                           "\n||=================================================||" +
-                           "\n||============-lethargie_sleeps-2022-==============||" +
-                           "\n\nSELECTION: ";
-
-            return header;
+            return fromXToY;
 
         }
-        private static string ThankYouMessage()
-        {
-            string message = "Thanks for using #Converter!\n" +
-                $"Visit https://github.com/lethargiesleeps/SharpConverter if you would like to contribute!";
-            return message;
-        }
-        private static string GetErrorMessage()
-        {
-            return "Invalid input. Type '-help' for help with a command";
-        }
+        
 
         
         #endregion
