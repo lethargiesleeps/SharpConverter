@@ -18,6 +18,7 @@ public enum CommandState
     BinaryToBinary,
     OctalToOctal,
     HexadecimalToHexadecimal,
-    Error
+    Error,
+    Help
 
 }

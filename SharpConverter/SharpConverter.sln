@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConverter.Console", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConverter.Shared", "SharpConverter.Shared\SharpConverter.Shared.csproj", "{E178CD12-8BDC-413B-868C-5B30034307B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpConverter.Tests", "SharpConverter.Tests\SharpConverter.Tests.csproj", "{160A776F-4FF7-4BBF-AFCA-E8DD4D0DE64E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpConverter.Debug", "SharpConverter.Test\SharpConverter.Debug.csproj", "{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{E178CD12-8BDC-413B-868C-5B30034307B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E178CD12-8BDC-413B-868C-5B30034307B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E178CD12-8BDC-413B-868C-5B30034307B1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{160A776F-4FF7-4BBF-AFCA-E8DD4D0DE64E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{160A776F-4FF7-4BBF-AFCA-E8DD4D0DE64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{160A776F-4FF7-4BBF-AFCA-E8DD4D0DE64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{160A776F-4FF7-4BBF-AFCA-E8DD4D0DE64E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -36,8 +36,9 @@ public static class Tools
         return returnValue;
     }
 
-    #endregion
+   
 
+    #endregion
     #region StringHandling
 
     public static string SplitConversionCommand(string input, bool getArguments = false)
@@ -153,7 +154,6 @@ public static class Tools
 
 
     #endregion
-
     #region StateProcessing
 
     public static CommandState ParseCommand(string command)
@@ -167,6 +167,9 @@ public static class Tools
 
         //Gets to at index 3, assuming command is valid
         char to = command[3];
+
+        if (command.ToLower().Equals("-help".ToLower()))
+            return CommandState.Help;
 
         switch (from)
         {
@@ -231,7 +234,8 @@ public static class Tools
                 return CommandState.Error;
         }
     }
-    
+
 
     #endregion
+
 }
