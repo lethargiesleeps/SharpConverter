@@ -129,6 +129,7 @@ namespace SharpConverter.Shared.Util.MenuManagement
                 {
                     string command = "";
                     string arguments = "";
+                    string conversion = "";
                     Console.Clear();
                     Console.WriteLine(ConsoleMenuTools.NSCMenu());
                     Input = Console.ReadLine();
@@ -137,7 +138,59 @@ namespace SharpConverter.Shared.Util.MenuManagement
 
                     command = Tools.SplitConversionCommand(Input);
                     arguments = Tools.SplitConversionCommand(Input,true);
-                    Console.WriteLine($"Command: " + command + "\nArguments: " + arguments);
+                    CommandState commandState = Tools.ParseCommand(command);
+                    string getNumber = "";
+
+                    switch (commandState)
+                    {
+                        case CommandState.DecimalToBinary:
+                            Console.WriteLine("\nEnter a decimal number: ");
+                            getNumber = Console.ReadLine();
+                            Console.WriteLine("\n" + NumberSystemConverter.DecimalToBinary(getNumber));
+                            Console.WriteLine("\nPress any key to continue...");
+                            break;
+                        case CommandState.DecimalToOctal:
+                            Console.WriteLine("\nEnter a decimal number: ");
+                            getNumber = Console.ReadLine();
+                            Console.WriteLine("\n" + NumberSystemConverter.DecimalToOctal(getNumber));
+                            Console.WriteLine("\nPress any key to continue...");
+                            break;
+                        case CommandState.DecimalToHexadecimal:
+                            break;
+                        case CommandState.BinaryToDecimal:
+                            break;
+                        case CommandState.BinaryToOctal:
+                            break;
+                        case CommandState.BinaryToHexadecimal:
+                            break;
+                        case CommandState.OctalToDecimal:
+                            break;
+                        case CommandState.OctalToBinary:
+                            break;
+                        case CommandState.OctalToHexadecimal:
+                            break;
+                        case CommandState.HexadecimalToDecimal:
+                            break;
+                        case CommandState.HexadecimalToBinary:
+                            break;
+                        case CommandState.HexadecimalToOctal:
+                            break;
+                        case CommandState.DecimalToDecimal:
+                            Console.WriteLine("Enter a decimal number: ");
+                            getNumber = Console.ReadLine();
+                            Console.WriteLine("\n" + NumberSystemConverter.ReturnOriginalValue(getNumber));
+                            break;
+                        case CommandState.BinaryToBinary:
+                            break;
+                        case CommandState.OctalToOctal:
+                            break;
+                        case CommandState.HexadecimalToHexadecimal:
+                            break;
+                        case CommandState.Error:
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                     Console.ReadKey();
                 }
             } while (InNavigation);

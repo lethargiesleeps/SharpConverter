@@ -16,7 +16,7 @@ namespace SharpConverter.Shared.Util.Contracts
         string DecimalToOctal(string decimalValue);
         string OctalToDecimal(string octalValue);
         char[] GetHexValues();
-
+        string ReturnOriginalValue(string input);
         string MultiConverted(string from, string to);
     }
 }

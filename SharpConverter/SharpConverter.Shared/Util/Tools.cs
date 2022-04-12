@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util;
 
@@ -149,6 +150,87 @@ public static class Tools
         return getArguments ? arguments.ToString() : command.ToString();
     }
 
+
+
+    #endregion
+
+    #region StateProcessing
+
+    public static CommandState ParseCommand(string command)
+    {
+        const int maxCommandLength = 4;
+        if (command.Length > maxCommandLength)
+            return CommandState.Error;
+
+        //Gets from at index 0, assuming command is valid
+        char from = command[0];
+
+        //Gets to at index 3, assuming command is valid
+        char to = command[3];
+
+        switch (from)
+        {
+            case 'd':
+                switch (to)
+                {
+                    case 'd':
+                        return CommandState.DecimalToDecimal;
+                    case 'b':
+                        return CommandState.DecimalToBinary;
+                    case 'o':
+                        return CommandState.DecimalToOctal;
+                    case 'h':
+                        return CommandState.DecimalToHexadecimal;
+                    default:
+                        return CommandState.Error;
+                        
+                }
+            case 'b':
+                switch (to)
+                {
+                    case 'd':
+                        return CommandState.BinaryToDecimal;
+                    case 'b':
+                        return CommandState.BinaryToBinary;
+                    case 'o':
+                        return CommandState.BinaryToOctal;
+                    case 'h':
+                        return CommandState.BinaryToHexadecimal;
+                    default:
+                        return CommandState.Error;
+                }
+            case 'h':
+                switch (to)
+                {
+                    case 'd':
+                        return CommandState.HexadecimalToDecimal;
+                    case 'b':
+                        return CommandState.HexadecimalToBinary;
+                    case 'o':
+                        return CommandState.HexadecimalToOctal;
+                    case 'h':
+                        return CommandState.HexadecimalToHexadecimal;
+                    default:
+                        return CommandState.Error;
+                }
+            case 'o':
+                switch (to)
+                {
+                    case 'd':
+                        return CommandState.OctalToDecimal;
+                    case 'b':
+                        return CommandState.OctalToBinary;
+                    case 'o':
+                        return CommandState.OctalToOctal;
+                    case 'h':
+                        return CommandState.OctalToHexadecimal;
+                    default:
+                        return CommandState.Error;
+                }
+            default:
+                return CommandState.Error;
+        }
+    }
     
 
     #endregion
