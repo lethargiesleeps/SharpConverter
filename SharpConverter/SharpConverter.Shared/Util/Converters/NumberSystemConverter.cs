@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpConverter.Shared.Util
+namespace SharpConverter.Shared.Util.Converters
 {
     public class NumberSystemConverter : INumberSystemConverter
     {

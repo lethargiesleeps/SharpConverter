@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util.MenuManagement
 {
@@ -20,6 +21,7 @@ namespace SharpConverter.Shared.Util.MenuManagement
                            "\n|| to convert to.                                  ||" +
                            "\n|| Add any arguments following a pipe '|'          ||" +
                            "\n|| For a list of available commands type 'help'.   ||" +
+                           "\n|| To go back to the main menu, type 'back'        ||" +
                            "\n||                                                 ||" +
                            "\n|| Example: For decimal to binary                  ||" +
                            "\n|| d => b                                          ||" +
@@ -56,9 +58,16 @@ namespace SharpConverter.Shared.Util.MenuManagement
                 $"Visit https://github.com/lethargiesleeps/SharpConverter if you would like to contribute!";
             return message;
         }
-        public static string GetErrorMessage()
+        public static string GetErrorMessage(ErrorState errorState)
         {
+            //TODO: Generate unique error messages
             return "Invalid input. Type '-help' for help with a command";
+        }
+
+        public static string GetHelpMessage(HelpState helpState)
+        {
+            //TODO: Implement unique help messages
+            return "Not yet implemented";
         }
     }
 }

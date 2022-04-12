@@ -3,15 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpConverter.Shared.Util.Converters;
+using SharpConverter.Shared.Util.MenuManagement.StateMachines;
+ 
+
 
 namespace SharpConverter.Shared.Util.MenuManagement
 {
     public class MenuManager
     {
+        public string Input { get; private set; }
         public bool IsConsole { get; private set; }
         public bool InNavigation { get; private set; }
         public MenuState MenuState { get; private set; }
-        public string ErrorMessage { get; private set; }
+        public MenuState LastMenuState { get; private set; }
+        public ErrorState ErrorState { get; private set; }
         public NumberSystemConverter NumberSystemConverter { get; private set; }
 
         public MenuManager(NumberSystemConverter numberSystemConverter)
@@ -43,75 +49,101 @@ namespace SharpConverter.Shared.Util.MenuManagement
         {
             do
             {
-
-            } while (InNavigation);
-        }
-        #region Assets
-       
-        //To complicated
-        public string[] NSCOperation(string input)
-        {
-            #region StringManipulation
-            string trimmedCommand = "";
-            string[] fromXToY = new string[2];
-
-            //TODO: Add arguments
-            string arguments = "";
-            bool isValid = false;
-
-            //Checks if valid based on proper usage of =>, and minimum needed characters in input (4)
-            if (input.Contains("=>") || input.Length > 4)
-                isValid = true;
-
-            //Throw if invalid
-            if (!isValid)
-            {
-                fromXToY[0] = "Nope";
-                fromXToY[1] = "Sorry";
-                MenuState = MenuState.Error;
-                return fromXToY;
-                
-            }
-                
-
-            //If input has arguments...
-            if(input.Contains('|'))
-            {
-
-                int index = input.IndexOf('|');
-                for (int i = index; i < input.Length; i++)
+                Console.Clear();
+                //Main Menu
+                while (MenuState == MenuState.Default)
                 {
-                    //Add to arguments string for later evalution
-                    arguments += input[i];
+                    Console.WriteLine(ConsoleMenuTools.MenuHeader());
+                    Input = Console.ReadLine();
+                    switch (Input)
+                    {
+                        case "1":
+                            MenuState = MenuState.NSCMenu;
+                            LastMenuState = MenuState.Default;
+                            break;
+                        case "2": //TODO: IEEE
+                            MenuState = MenuState.NotDefined;
+                            LastMenuState = MenuState.Default;
+                            break;
+                        case "3": //TODO: Unicode Conversion
+                            MenuState = MenuState.NotDefined;
+                            LastMenuState = MenuState.Default;
+                            break;
+                        case "4":
+                            MenuState = MenuState.Exit;
+                            LastMenuState = MenuState.Default;
+                            break;
+                        default:
+                            MenuState = MenuState.Error;
+                            ErrorState = ErrorState.Default;
+                            LastMenuState = MenuState.Default;
+                            break;
+
+                    }
+                }
+                //Exit program
+                while (MenuState == MenuState.Exit)
+                {
+                    Console.Clear();
+                    Console.WriteLine(ConsoleMenuTools.ThankYouMessage());
+                    Console.ReadKey();
+                    InNavigation = false;
+                    break;
                     
                 }
-                //Remove arguments from physical input
-                input = input.Remove(index);
-            }
+                //Error menu TODO:Error menu needs work
+                while (MenuState == MenuState.Error)
+                {
+                    switch (ErrorState)
+                    {
+                        case ErrorState.Default:
+                            Console.WriteLine(ConsoleMenuTools.GetErrorMessage(ErrorState));
+                            Console.ReadKey();
+                            ErrorState = ErrorState.None;
+                            MenuState = LastMenuState;
+                            break;
+                        case ErrorState.NSC:
+                            Console.WriteLine(ConsoleMenuTools.GetErrorMessage(ErrorState));
+                            Console.ReadKey();
+                            ErrorState = ErrorState.None;
+                            MenuState = LastMenuState;
+                            break;
+                        case ErrorState.IEEE:
+                            Console.WriteLine(ConsoleMenuTools.GetErrorMessage(ErrorState));
+                            Console.ReadKey();
+                            ErrorState = ErrorState.None;
+                            MenuState = LastMenuState;
+                            break;
+                        case ErrorState.Unicode:
+                            Console.WriteLine(ConsoleMenuTools.GetErrorMessage(ErrorState));
+                            Console.ReadKey();
+                            ErrorState = ErrorState.None;
+                            MenuState = LastMenuState;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                }
+                //Number Systems Conversion
+                while (MenuState == MenuState.NSCMenu)
+                {
+                    string command = "";
+                    string arguments = "";
+                    Console.Clear();
+                    Console.WriteLine(ConsoleMenuTools.NSCMenu());
+                    Input = Console.ReadLine();
+                    if (Input == null)
+                        throw new NullReferenceException("Hmmm, was null in MenuManager @ Line 136");
 
-            //Adds command by filtering
-            foreach (var c in input)
-            {
-                if (!c.Equals(' ') || !c.Equals('\n') || !c.Equals('\t'))
-                    trimmedCommand += c;
-            }
-
-            //Get command parameters
-            fromXToY = trimmedCommand.Split(new char[2] { '=', '>'}, StringSplitOptions.TrimEntries);
-
-            //Change whitespace to avoid confusion in loops
-            
-            #endregion
-            if (fromXToY is null)
-                throw new NullReferenceException("Hmmm something went wrong... In MenuManager @ Line 173");
-
-            return fromXToY;
-
+                    command = Tools.SplitConversionCommand(Input);
+                    arguments = Tools.SplitConversionCommand(Input,true);
+                    Console.WriteLine($"Command: " + command + "\nArguments: " + arguments);
+                    Console.ReadKey();
+                }
+            } while (InNavigation);
+            Environment.Exit(0);
         }
         
-
-        
-        #endregion
 
     }
 }
