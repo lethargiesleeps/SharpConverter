@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util.Contracts
 {
@@ -17,6 +18,6 @@ namespace SharpConverter.Shared.Util.Contracts
         string OctalToDecimal(string octalValue);
         char[] GetHexValues();
         string ReturnOriginalValue(string input);
-        string MultiConverted(string from, string to);
+        string MultiConverted(CommandState command);
     }
 }

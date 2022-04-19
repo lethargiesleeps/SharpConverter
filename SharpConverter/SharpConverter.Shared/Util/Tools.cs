@@ -152,6 +152,18 @@ public static class Tools
         return getArguments ? arguments.ToString() : command.ToString();
     }
 
+    public static StringBuilder ReverseString(StringBuilder preReverse)
+    {
+        StringBuilder postReverse = new StringBuilder();
+
+        for (int i = preReverse.Length-1; i >= 0; i--)
+        {
+            postReverse.Append(preReverse[i]);
+        }
+        return postReverse;
+
+    }
+
     
 
 

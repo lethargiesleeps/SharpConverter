@@ -198,7 +198,6 @@ public class MenuManager
                         Console.ReadKey();
                         break;
                     case CommandState.Error:
-                        //TODO: Specific error handling
                         Console.WriteLine("Command was invalid. Type '-help' at any time for more info.");
                         Console.WriteLine("Press any key to continue...");
                         break;
