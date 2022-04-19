@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using SharpConverter.Shared.Util.Converters;
 using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util;
@@ -150,6 +151,8 @@ public static class Tools
 
         return getArguments ? arguments.ToString() : command.ToString();
     }
+
+    
 
 
 

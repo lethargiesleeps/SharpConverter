@@ -134,64 +134,68 @@ public class MenuManager
                 switch (commandState)
                 {
                     case CommandState.DecimalToBinary:
-                        Console.WriteLine("\nEnter a decimal number: ");
-                        getNumber = Console.ReadLine();
-#pragma warning disable CS8604 // Possible null reference argument.
-                        Console.WriteLine("\n" + NumberSystemConverter.DecimalToBinary(getNumber));
-#pragma warning restore CS8604 // Possible null reference argument.
-                        Console.WriteLine("\nPress any key to continue...");
+                        Console.WriteLine("This will convert decimal to binary");
                         Console.ReadKey();
                         break;
                     case CommandState.DecimalToOctal:
-                        Console.WriteLine("\nEnter a decimal number: ");
-                        getNumber = Console.ReadLine();
-                        Console.ReadKey();
-#pragma warning disable CS8604 // Possible null reference argument.
-                        Console.WriteLine("\n" + NumberSystemConverter.DecimalToOctal(getNumber));
-#pragma warning restore CS8604 // Possible null reference argument.
-                        Console.WriteLine("\nPress any key to continue...");
+                        Console.WriteLine("This will convert decimal to octal");
                         Console.ReadKey();
                         break;
                     case CommandState.DecimalToHexadecimal:
-                        Console.WriteLine("\nEnter a decimal number: ");
-                        getNumber = Console.ReadLine();
-#pragma warning disable CS8604
-                        Console.WriteLine("\n" + NumberSystemConverter.DecimalToHexadecimal(getNumber));
-#pragma warning restore CS8604
-                        Console.WriteLine("\nPress any key to continue...");
-                        Console.ReadKey();
+                        Console.WriteLine("This will convert decimal to hex");
                         Console.ReadKey();
                         break;
                     case CommandState.BinaryToDecimal:
+                        Console.WriteLine("This will convert binary to decimal");
+                        Console.ReadKey();
                         break;
                     case CommandState.BinaryToOctal:
+                        Console.WriteLine("This will convert binary to octal");
+                        Console.ReadKey();
                         break;
                     case CommandState.BinaryToHexadecimal:
+                        Console.WriteLine("This will convert binary to hex");
+                        Console.ReadKey();
                         break;
                     case CommandState.OctalToDecimal:
+                        Console.WriteLine("This will convert octal to decimal");
+                        Console.ReadKey();
                         break;
                     case CommandState.OctalToBinary:
+                        Console.WriteLine("This will convert octal to binary");
+                        Console.ReadKey();
                         break;
                     case CommandState.OctalToHexadecimal:
+                        Console.WriteLine("This will convert octal to hex");
+                        Console.ReadKey();
                         break;
                     case CommandState.HexadecimalToDecimal:
+                        Console.WriteLine("This will convert hex to decimal");
+                        Console.ReadKey();
                         break;
                     case CommandState.HexadecimalToBinary:
+                        Console.WriteLine("This will convert hex to binary");
+                        Console.ReadKey();
                         break;
                     case CommandState.HexadecimalToOctal:
+                        Console.WriteLine("This will hex to octal");
+                        Console.ReadKey();
                         break;
                     case CommandState.DecimalToDecimal:
-                        Console.WriteLine("Enter a decimal number: ");
-                        getNumber = Console.ReadLine();
-#pragma warning disable CS8604 // Possible null reference argument.
-                        Console.WriteLine("\n" + NumberSystemConverter.ReturnOriginalValue(getNumber));
-#pragma warning restore CS8604 // Possible null reference argument.
+                        Console.WriteLine("This will return original.");
+                        Console.ReadKey();
                         break;
                     case CommandState.BinaryToBinary:
+                        Console.WriteLine("This will return original.");
+                        Console.ReadKey();
                         break;
                     case CommandState.OctalToOctal:
+                        Console.WriteLine("This will return original.");
+                        Console.ReadKey();
                         break;
                     case CommandState.HexadecimalToHexadecimal:
+                        Console.WriteLine("This will return original.");
+                        Console.ReadKey();
                         break;
                     case CommandState.Error:
                         //TODO: Specific error handling
