@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 using SharpConverter.Shared.Util.Contracts;
 using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
@@ -7,66 +6,59 @@ namespace SharpConverter.Shared.Util.Converters;
 
 public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 {
-    
-
     #region Conversions
 
     public string DecimalToBinary(string decimalValue)
     {
         //Declarations
         double conversionTest = 0;
-        StringBuilder finalConversion = new StringBuilder();
-        int beforeFloatingPoint = 0;
-        int afterFloatingPoint = 0;
-        ;
-        string input = ValidateDecimalInput(decimalValue);
-        bool isValid = false;
+        var finalConversion = new StringBuilder();
+        var beforeFloatingPoint = 0;
+        var afterFloatingPoint = 0;
+
+        var input = ValidateDecimalInput(decimalValue);
+        var isValid = false;
 
         //Validation
         try
         {
             conversionTest = double.Parse(input);
-            isValid = true;
         }
         catch (Exception e)
         {
             isValid = false;
         }
+        finally
+        {
+            isValid = true;
+        }
 
         if (isValid)
         {
-            //Handle floating points
+            //TODO:Handle floating points
             if (input.Contains('.'))
             {
-                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false,input));
+                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
                 afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
             }
             else
             {
                 beforeFloatingPoint = int.Parse(input);
-                int[] binaryArray = new int[byte.MaxValue];
-                for (int i = 0; beforeFloatingPoint > 0; i++)
+                var binaryArray = new int[byte.MaxValue];
+                for (var i = 0; beforeFloatingPoint > 0; i++)
                 {
                     binaryArray[i] = beforeFloatingPoint % 2;
                     beforeFloatingPoint /= 2;
                     finalConversion.Append(binaryArray[i]);
-
-
                 }
 
                 finalConversion = Tools.ReverseString(finalConversion);
-
-
-
             }
 
             return finalConversion.ToString();
-
         }
-        else
-            return input; //Returns error message
 
-
+        return input; //Returns error message
     }
 
     public string BinaryToDecimal(string binaryValue)
@@ -76,7 +68,55 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string DecimalToHexadecimal(string decimalValue)
     {
-        throw new NotImplementedException();
+        //Declarations
+        double conversionTest = 0;
+        var finalConversion = new StringBuilder();
+        var beforeFloatingPoint = 0;
+        var afterFloatingPoint = 0;
+        var input = ValidateDecimalInput(decimalValue);
+        var isValid = false;
+
+        //Validation
+        try
+        {
+            conversionTest = double.Parse(input);
+        }
+        catch (Exception e)
+        {
+            isValid = false;
+        }
+        finally
+        {
+            isValid = true;
+        }
+
+        //Conversion logic
+        if (isValid)
+        {
+            //TODO:Handle floating points
+            if (input.Contains('.'))
+            {
+                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
+                afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
+            }
+            else
+            {
+                beforeFloatingPoint = int.Parse(input);
+                var hexArray = new int[byte.MaxValue];
+                for (var i = 0; beforeFloatingPoint > 0; i++)
+                {
+                    hexArray[i] = beforeFloatingPoint % 16;
+                    beforeFloatingPoint /= 16;
+                    finalConversion.Append(GetHexValues()[hexArray[i]]);
+                }
+
+                finalConversion = Tools.ReverseString(finalConversion);
+            }
+
+            return finalConversion.ToString();
+        }
+
+        return input; //Returns error message
     }
 
     public string HexadecimalToDecimal(string hexValue)
@@ -86,7 +126,53 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string DecimalToOctal(string decimalValue)
     {
-        throw new NotImplementedException();
+        double conversionTest = 0;
+        var finalConversion = new StringBuilder();
+        var beforeFloatingPoint = 0;
+        var afterFloatingPoint = 0;
+        var input = ValidateDecimalInput(decimalValue);
+        var isValid = false;
+
+        //Validation
+        try
+        {
+            conversionTest = double.Parse(input);
+        }
+        catch (Exception e)
+        {
+            isValid = false;
+        }
+        finally
+        {
+            isValid = true;
+        }
+
+        if (isValid)
+        {
+            //TODO:Handle floating points
+            if (input.Contains('.'))
+            {
+                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
+                afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
+            }
+            else
+            {
+                beforeFloatingPoint = int.Parse(input);
+                var octalArray = new int[byte.MaxValue];
+                for (var i = 0; beforeFloatingPoint > 0; i++)
+                {
+                    octalArray[i] = beforeFloatingPoint % 8;
+                    beforeFloatingPoint /= 8;
+                    finalConversion.Append(octalArray[i]);
+                }
+
+                finalConversion = Tools.ReverseString(finalConversion);
+            }
+
+            return finalConversion.ToString();
+        }
+
+        return input; //Returns error message;
     }
 
     public string OctalToDecimal(string octalValue)
@@ -99,9 +185,9 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     #region Assets
 
-    public char[] GetHexValues()
+    private char[] GetHexValues()
     {
-        char[] hexValues = new char[16]
+        var hexValues = new char[16]
         {
             '0', '1', '2',
             '3', '4', '5',
@@ -109,6 +195,7 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
             '9', 'A', 'B',
             'C', 'D', 'E', 'F'
         };
+
 
         return hexValues;
     }
@@ -120,11 +207,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         //2 = isNegativeValue
         //3 = containsLetters
         //4 = overMaxSize
-        bool[] checks = new bool[4]
+        var checks = new bool[4]
         {
             false, false, false,
             false
-
         };
 
         return checks;
@@ -140,24 +226,20 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         throw new NotImplementedException();
     }
 
-    
-
     #endregion
-
 
 
     #region Validation
 
-    //TODO:Validate Decimal Input
     public string ValidateDecimalInput(string input)
     {
-        StringBuilder errorInput = new StringBuilder();
-        StringBuilder cleanedInput = new StringBuilder();
-        int numberOfFloatingPoints = 0;
-        bool hasFloatingPoint = false;
-        bool isValid = false;
-        bool[] checks = ValidationChecks();
-        
+        var errorInput = new StringBuilder();
+        var cleanedInput = new StringBuilder();
+        var numberOfFloatingPoints = 0;
+        var hasFloatingPoint = false;
+        var isValid = false;
+        var checks = ValidationChecks();
+
 
         //Error message instantiation
         errorInput.Append("ERROR:\n");
@@ -166,28 +248,23 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         {
             errorInput.Append("Input cannot be empty or whitespace.\n");
             checks[0] = true;
-
         }
-            
+
 
         //Floating point check
         if (input.Contains('.'))
             hasFloatingPoint = true;
         if (hasFloatingPoint)
-        {
             foreach (var i in input)
-            {
                 if (i.Equals('.'))
                     numberOfFloatingPoints++;
-            }
-        }
 
         if (numberOfFloatingPoints > 1)
         {
             errorInput.Append("Input has too many floating points. Can only contain 1 floating point\n");
             checks[1] = true;
         }
-            
+
 
         //Negative number check
         if (input[0].Equals('-'))
@@ -196,14 +273,11 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
                 "This converter cannot handle negative values with adequate precision. Use the IEEE converter if handling negative decimal values.\n");
             checks[2] = true;
         }
+
         //Check is there are letters or illegal symbols
         foreach (var c in input)
-        {
             if (!char.IsDigit(c) && !c.Equals('.') && !c.Equals(' '))
-            {
                 checks[3] = true;
-            }
-        }
 
         if (checks[3])
             errorInput.Append("Decimal numbers cannot contain letters or illegal symbols.\n");
@@ -212,12 +286,8 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
             isValid = true;
 
         if (isValid)
-        {
             foreach (var c in input.Where(c => char.IsDigit(c) || c.Equals('.')))
-            {
                 cleanedInput.Append(c);
-            }
-        }
 
 
         errorInput.Append("Press any key to try again...");
@@ -239,8 +309,6 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
     {
         throw new NotImplementedException();
     }
-
-    
 
     #endregion
 }

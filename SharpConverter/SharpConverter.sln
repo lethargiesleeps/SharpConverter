@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConverter.Console", "S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConverter.Shared", "SharpConverter.Shared\SharpConverter.Shared.csproj", "{E178CD12-8BDC-413B-868C-5B30034307B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpConverter.Debug", "SharpConverter.Test\SharpConverter.Debug.csproj", "{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpConverter.Debug", "SharpConverter.Test\SharpConverter.Debug.csproj", "{2B79442F-E1EA-454A-A0AD-EC6F08359E6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{194BE735-8C6D-4F90-A3C3-2B74CBB1B0AC}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

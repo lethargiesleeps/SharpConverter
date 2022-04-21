@@ -15,7 +15,7 @@ public static class Tools
         var returnValue = "";
 
         for (var i = 0; i < characters.Length; i++)
-            if (characters[i] == '.')
+            if (characters[i].Equals('.'))
                 pointIndex = i;
 
         if (!postPoint)
