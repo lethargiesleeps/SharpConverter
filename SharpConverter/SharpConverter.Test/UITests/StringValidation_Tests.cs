@@ -19,4 +19,11 @@ public static class StringValidation_Tests
         string input = Console.ReadLine();
         Console.WriteLine(_nsc.DecimalToBinary(input));
     }
+
+    public static void BinaryInput_Test()
+    {
+        Console.WriteLine("Enter binary value");
+        string? input = Console.ReadLine();
+        Console.WriteLine(_nsc.ValidateBinaryInput(input));
+    }
 }
