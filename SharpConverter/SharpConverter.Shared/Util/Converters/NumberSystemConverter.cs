@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
 using SharpConverter.Shared.Util.Contracts;
-using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util.Converters;
 
@@ -143,7 +142,70 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string HexadecimalToDecimal(string hexValue)
     {
-        throw new NotImplementedException();
+        var input = ValidateHexadecimalInput(hexValue);
+        var isValid = !input.Contains("ERROR");
+        if (isValid)
+        {
+            //TODO: Handle floating points
+            if (input.Contains('.')) return input;
+            ulong decimalValue = 0;
+            var exponent = 0;
+            for (var i = input.Length - 1; i >= 0; i--)
+            {
+                var realValue = 0;
+                switch (input[i])
+                {
+                    case '0':
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                    case '5':
+                    case '6':
+                    case '7':
+                    case '8':
+                    case '9':
+                        realValue = int.Parse(input[i].ToString());
+                        break;
+                    case 'A':
+                        realValue = 10;
+                        break;
+                    case 'B':
+                        realValue = 11;
+                        break;
+                    case 'C':
+                        realValue = 12;
+                        break;
+                    case 'D':
+                        realValue = 13;
+                        break;
+                    case 'E':
+                        realValue = 14;
+                        break;
+                    case 'F':
+                        realValue = 15;
+                        break;
+                }
+
+                decimalValue += (ulong) (realValue * Math.Pow(16, exponent));
+                exponent++;
+            }
+
+            return decimalValue.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return input; //Returns error message
+    }
+
+    public string HexadecimalToOctal(string hexValue)
+    {
+        var input = ValidateHexadecimalInput(hexValue);
+        var isValid = !input.Contains("ERROR");
+        if (!isValid) return input; //Returns error message
+        //TODO:Handle floating points
+        if (input.Contains('.')) return input; //To change
+        var decimalValue = HexadecimalToDecimal(input);
+        return DecimalToOctal(decimalValue);
     }
 
     public string BinaryToOctal(string binaryValue)
@@ -164,7 +226,18 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string OctalToBinary(string octalValue)
     {
-        throw new NotImplementedException();
+        var input = ValidateOctalInput(octalValue);
+        var isValid = !input.Contains("ERROR");
+
+        //Conversion Logic => Uses previously defined method OctalToDecimal() to facilitate process
+        //Might make an alternative method using array counting once bulk of project is completed
+
+        if (!isValid) return input; //Returns error message
+        //TODO:Handle floating points
+        if (input.Contains('.')) return input; //To change
+
+        var decimalValue = OctalToDecimal(input);
+        return DecimalToBinary(decimalValue);
     }
 
     public string BinaryToHexadecimal(string binaryValue)
@@ -186,7 +259,13 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string HexadecimalToBinary(string hexValue)
     {
-        throw new NotImplementedException();
+        var input = ValidateHexadecimalInput(hexValue);
+        var isValid = !input.Contains("ERROR");
+        if (!isValid) return input; //Returns error message
+        //TODO: Handle floating points
+        if (input.Contains('.')) return input; //To change
+        var decimalValue = HexadecimalToDecimal(input);
+        return DecimalToBinary(decimalValue);
     }
 
     public string DecimalToOctal(string decimalValue)
@@ -242,7 +321,40 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string OctalToDecimal(string octalValue)
     {
-        throw new NotImplementedException();
+        var input = ValidateOctalInput(octalValue);
+        //Validation
+        var isValid = !input.Contains("ERROR");
+
+        //Conversion logic
+        if (isValid)
+        {
+            //TODO: Handle floating points
+            if (input.Contains('.')) return input;
+
+            double decimalValue = 0;
+            var exponent = 0;
+            for (var i = input.Length - 1; i >= 0; i--)
+            {
+                decimalValue += double.Parse(input[i].ToString()) * Math.Pow(8, exponent);
+                exponent++;
+            }
+
+            return decimalValue.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return input; // Returns error message
+    }
+
+    public string OctalToHexadecimal(string octalValue)
+    {
+        var input = ValidateOctalInput(octalValue);
+        //Validation
+        var isValid = !input.Contains("ERROR");
+        if (!isValid) return input; //Returns error message
+        //TODO: Handle floating points
+        if (input.Contains('.')) return input; //To change
+        var decimalValue = OctalToDecimal(input);
+        return DecimalToHexadecimal(decimalValue);
     }
 
     #endregion
@@ -287,16 +399,12 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         throw new NotImplementedException();
     }
 
-    public string MultiConverted(CommandState command)
-    {
-        throw new NotImplementedException();
-    }
-
     #endregion
 
 
     #region Validation
 
+    //TODO: Fix messages for > maxLength
     public string ValidateDecimalInput(string input)
     {
         var errorInput = new StringBuilder();
@@ -461,7 +569,101 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string ValidateHexadecimalInput(string input)
     {
-        throw new NotImplementedException();
+        var errorInput = new StringBuilder();
+        var cleanedInput = new StringBuilder();
+        var numberOfFloatingPoints = 0;
+        var hasFloatingPoints = false;
+        var isValid = false;
+        var checks = ValidationChecks();
+
+        //Error message instantiation
+        errorInput.Append("ERROR:\n");
+        //Check null, empty, whitespace
+        if (string.IsNullOrEmpty(input) || string.IsNullOrWhiteSpace(input))
+        {
+            errorInput.Append("Input cannot be empty or whitespace.\n");
+            checks[0] = true;
+        }
+
+        //Floating point check
+        if (input.Contains('.'))
+            hasFloatingPoints = true;
+        if (hasFloatingPoints) numberOfFloatingPoints += input.Count(i => i.Equals('.'));
+
+        if (numberOfFloatingPoints > 1)
+        {
+            errorInput.Append("Input has too many floating points. Can only contain 1 floating point.\n");
+            checks[1] = true;
+        }
+
+        //Negative number check
+        if (input.Length > 0)
+            if (input[0].Equals('-'))
+            {
+                errorInput.Append(
+                    "This converter cannot handle binary values with '-'. Use the IEEE converter if handling negative binary values.\n");
+                checks[2] = true;
+            }
+
+        //Max Value
+        if (input.Length > 50)
+        {
+            errorInput.Append("Cannot enter a value greater than 50 binary digits.\n");
+            checks[5] = true;
+        }
+
+        //Check for illegale characters
+        var isValidCharacter = new bool[input.Length];
+        for (var i = 0; i < input.Length; i++)
+            switch (input[i])
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case 'A':
+                case 'a':
+                case 'B':
+                case 'b':
+                case 'C':
+                case 'c':
+                case 'D':
+                case 'd':
+                case 'E':
+                case 'e':
+                case 'F':
+                case 'f':
+                case '.':
+                case ' ':
+                    isValidCharacter[i] = true;
+                    break;
+                default:
+                    isValidCharacter[i] = false;
+                    break;
+            }
+
+        foreach (var b in isValidCharacter)
+            if (!b)
+                checks[4] = true;
+
+        if (checks[4])
+            errorInput.Append("Hexadecimal values must be between 0-9 and/or A-F.\n");
+        if (!checks[0] && !checks[1] && !checks[2] && !checks[3] && !checks[4] && !checks[5])
+            isValid = true;
+        if (isValid)
+            foreach (var c in input.Where(c => !c.Equals(' ')))
+                cleanedInput.Append(c);
+
+        errorInput.Append("Press any key to try again...");
+
+        //Final result
+        return isValid ? cleanedInput.ToString().ToUpper() : errorInput.ToString();
     }
 
     public string ValidateBinaryInput(string input)

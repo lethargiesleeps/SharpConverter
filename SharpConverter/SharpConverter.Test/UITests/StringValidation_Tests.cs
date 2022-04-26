@@ -26,4 +26,11 @@ public static class StringValidation_Tests
         var input = Console.ReadLine();
         Console.WriteLine(_nsc.ValidateOctalInput(input!));
     }
+
+    public static void HexInput_Test()
+    {
+        Console.WriteLine("Enter hex value:");
+        var input = Console.ReadLine();
+        Console.WriteLine(_nsc.ValidateHexadecimalInput(input!));
+    }
 }
