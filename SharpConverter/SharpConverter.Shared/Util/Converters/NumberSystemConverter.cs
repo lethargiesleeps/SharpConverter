@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using SharpConverter.Shared.Util.Contracts;
 using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
@@ -11,10 +12,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
     public string DecimalToBinary(string decimalValue)
     {
         //Declarations
-        double conversionTest = 0;
+        ulong conversionTest = 0;
         var finalConversion = new StringBuilder();
-        var beforeFloatingPoint = 0;
-        var afterFloatingPoint = 0;
+        ulong beforeFloatingPoint = 0;
+        ulong afterFloatingPoint = 0;
 
         var input = ValidateDecimalInput(decimalValue);
         var isValid = false;
@@ -22,7 +23,7 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         //Validation
         try
         {
-            conversionTest = double.Parse(input);
+            conversionTest = ulong.Parse(input);
         }
         catch (Exception e)
         {
@@ -38,13 +39,13 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
             //TODO:Handle floating points
             if (input.Contains('.'))
             {
-                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
-                afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
+                beforeFloatingPoint = ulong.Parse(Tools.SplitDecimal(false, input));
+                afterFloatingPoint = ulong.Parse(Tools.SplitDecimal(true, input));
             }
             else
             {
-                beforeFloatingPoint = int.Parse(input);
-                var binaryArray = new int[byte.MaxValue];
+                beforeFloatingPoint = ulong.Parse(input);
+                var binaryArray = new ulong[byte.MaxValue];
                 for (var i = 0; beforeFloatingPoint > 0; i++)
                 {
                     binaryArray[i] = beforeFloatingPoint % 2;
@@ -63,23 +64,44 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string BinaryToDecimal(string binaryValue)
     {
-        throw new NotImplementedException();
+        var input = ValidateBinaryInput(binaryValue);
+        //Validation
+        var isValid = !input.Contains("ERROR");
+
+        //Conversion Logic
+        if (isValid)
+        {
+            //TODO: Handle floating points
+            if (input.Contains('.')) return input;
+
+            double decimalValue = 0;
+            var exponent = 0;
+            for (var i = input.Length - 1; i >= 0; i--)
+            {
+                decimalValue += double.Parse(input[i].ToString()) * Math.Pow(2, exponent);
+                exponent++;
+            }
+
+            return decimalValue.ToString(CultureInfo.InvariantCulture);
+        }
+
+        return input; //Returns error message
     }
 
     public string DecimalToHexadecimal(string decimalValue)
     {
         //Declarations
-        double conversionTest = 0;
+        ulong conversionTest = 0;
         var finalConversion = new StringBuilder();
-        var beforeFloatingPoint = 0;
-        var afterFloatingPoint = 0;
+        ulong beforeFloatingPoint = 0;
+        ulong afterFloatingPoint = 0;
         var input = ValidateDecimalInput(decimalValue);
         var isValid = false;
 
         //Validation
         try
         {
-            conversionTest = double.Parse(input);
+            conversionTest = ulong.Parse(input);
         }
         catch (Exception e)
         {
@@ -96,13 +118,13 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
             //TODO:Handle floating points
             if (input.Contains('.'))
             {
-                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
-                afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
+                beforeFloatingPoint = ulong.Parse(Tools.SplitDecimal(false, input));
+                afterFloatingPoint = ulong.Parse(Tools.SplitDecimal(true, input));
             }
             else
             {
-                beforeFloatingPoint = int.Parse(input);
-                var hexArray = new int[byte.MaxValue];
+                beforeFloatingPoint = ulong.Parse(input);
+                var hexArray = new ulong[byte.MaxValue];
                 for (var i = 0; beforeFloatingPoint > 0; i++)
                 {
                     hexArray[i] = beforeFloatingPoint % 16;
@@ -124,19 +146,62 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         throw new NotImplementedException();
     }
 
+    public string BinaryToOctal(string binaryValue)
+    {
+        var input = ValidateBinaryInput(binaryValue);
+        //Validation
+        var isValid = !input.Contains("ERROR");
+
+        //Conversion Logic => Uses previously defined method BinaryToDecimal() to facilitate process
+        //Might make an alternative method using array counting once bulk of project is completed
+        if (!isValid) return input;
+        //TODO: Handle floating points
+        if (input.Contains('.')) return input; //To change
+
+        var decimalValue = BinaryToDecimal(input);
+        return DecimalToOctal(decimalValue);
+    }
+
+    public string OctalToBinary(string octalValue)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string BinaryToHexadecimal(string binaryValue)
+    {
+        var input = ValidateBinaryInput(binaryValue);
+        //Validations
+        var isValid = !input.Contains("ERROR");
+
+        //Conversion Logic => Uses previously defined method BinaryToDecimal() to facilitate process
+        //Might make an alternative method using array counting once bulk of project is completed
+        //This method works for now, although less fun than creating its own logic
+
+        if (!isValid) return input; //Returns error message
+        //TODO: handle floating points
+        if (input.Contains('.')) return input; //To change
+        var decimalValue = BinaryToDecimal(input);
+        return DecimalToHexadecimal(decimalValue);
+    }
+
+    public string HexadecimalToBinary(string hexValue)
+    {
+        throw new NotImplementedException();
+    }
+
     public string DecimalToOctal(string decimalValue)
     {
-        double conversionTest = 0;
+        ulong conversionTest = 0;
         var finalConversion = new StringBuilder();
-        var beforeFloatingPoint = 0;
-        var afterFloatingPoint = 0;
+        ulong beforeFloatingPoint = 0;
+        ulong afterFloatingPoint = 0;
         var input = ValidateDecimalInput(decimalValue);
         var isValid = false;
 
         //Validation
         try
         {
-            conversionTest = double.Parse(input);
+            conversionTest = ulong.Parse(input);
         }
         catch (Exception e)
         {
@@ -152,13 +217,13 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
             //TODO:Handle floating points
             if (input.Contains('.'))
             {
-                beforeFloatingPoint = int.Parse(Tools.SplitDecimal(false, input));
-                afterFloatingPoint = int.Parse(Tools.SplitDecimal(true, input));
+                beforeFloatingPoint = ulong.Parse(Tools.SplitDecimal(false, input));
+                afterFloatingPoint = ulong.Parse(Tools.SplitDecimal(true, input));
             }
             else
             {
-                beforeFloatingPoint = int.Parse(input);
-                var octalArray = new int[byte.MaxValue];
+                beforeFloatingPoint = ulong.Parse(input);
+                var octalArray = new ulong[byte.MaxValue];
                 for (var i = 0; beforeFloatingPoint > 0; i++)
                 {
                     octalArray[i] = beforeFloatingPoint % 8;
@@ -207,10 +272,11 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         //2 = isNegativeValue
         //3 = containsLetters
         //4 = illegalCharactersInNumberSystem
-        var checks = new bool[5]
+        //5 = Max Length
+        var checks = new bool[6]
         {
             false, false, false,
-            false, false
+            false, false, false
         };
 
         return checks;
@@ -268,14 +334,12 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
         //Negative number check
         if (input.Length > 0)
-        {
             if (input[0].Equals('-'))
             {
                 errorInput.Append(
                     "This converter cannot handle negative values with adequate precision. Use the IEEE converter if handling negative decimal values.\n");
                 checks[2] = true;
             }
-        }
 
         //Check is there are letters or illegal symbols
         foreach (var c in input)
@@ -300,7 +364,99 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
 
     public string ValidateOctalInput(string input)
     {
-        throw new NotImplementedException();
+        var errorInput = new StringBuilder();
+        var cleanedInput = new StringBuilder();
+        var numberOfFloatingPoints = 0;
+        var hasFloatingPoints = false;
+        var isValid = false;
+        var checks = ValidationChecks();
+
+
+        //Error message instantiation
+        errorInput.Append("ERROR:\n");
+        //Check null, empty, whitespace
+        if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(input))
+        {
+            errorInput.Append("Input cannot be empty or whitespace.\n");
+            checks[0] = true;
+        }
+
+        //Floating point check
+        if (input.Contains('.'))
+            hasFloatingPoints = true;
+        if (hasFloatingPoints) numberOfFloatingPoints += input.Count(i => i.Equals('.'));
+
+        if (numberOfFloatingPoints > 1)
+        {
+            errorInput.Append("Input has too many floating points. Can only contain 1 floating point.\n");
+            checks[1] = true;
+        }
+
+        //Negative number check
+        if (input.Length > 0)
+            if (input[0].Equals('-'))
+            {
+                errorInput.Append(
+                    "This converter cannot handle binary values with '-'. Use the IEEE converter if handling negative binary values.\n");
+                checks[2] = true;
+            }
+
+        //Max Value
+        if (input.Length > 50)
+        {
+            errorInput.Append("Cannot enter a value greater than 50 binary digits.\n");
+            checks[5] = true;
+        }
+
+        //Check is there are letters or illegal symbols
+        foreach (var c in input.Where(c => !char.IsDigit(c) && !c.Equals('.') && !c.Equals(' ')))
+            checks[3] = true;
+
+        if (checks[3])
+            errorInput.Append("Decimal numbers cannot contain letters or illegal symbols.\n");
+
+
+        //Check for illegal numbers
+        var isValidCharacter = new bool[input.Length];
+        for (var i = 0; i < input.Length; i++)
+            switch (input[i])
+            {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '.':
+                case ' ':
+                    isValidCharacter[i] = true;
+                    break;
+                default:
+                    isValidCharacter[i] = false;
+                    break;
+            }
+
+        foreach (var b in isValidCharacter)
+            if (!b)
+                checks[4] = true;
+
+
+        if (checks[4])
+            errorInput.Append("Octal values must be between 0 and 7.\n");
+
+        if (!checks[0] && !checks[1] && !checks[2] && !checks[3] && !checks[4] && !checks[5])
+            isValid = true;
+
+        if (isValid)
+            foreach (var c in input.Where(c => char.IsDigit(c) || c.Equals('.')))
+                cleanedInput.Append(c);
+
+        errorInput.Append("Press any key to try again...");
+
+        //Final result
+        return isValid ? cleanedInput.ToString() : errorInput.ToString();
     }
 
     public string ValidateHexadecimalInput(string input)
@@ -330,45 +486,47 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         //Floating point check
         if (input.Contains('.'))
             hasFloatingPoint = true;
-        if(hasFloatingPoint)
-            foreach(var i in input)
-                if (i.Equals('.'))
-                    numberOfFloatingPoints++;
+        if (hasFloatingPoint) numberOfFloatingPoints += input.Count(i => i.Equals('.'));
 
         if (numberOfFloatingPoints > 1)
         {
-            errorInput.Append("Input has too many floating points. Can only contain 1 floating point\n");
+            errorInput.Append("Input has too many floating points. Can only contain 1 floating point.\n");
             checks[1] = true;
         }
 
         //Negative number check
         if (input.Length > 0)
-        {
             if (input[0].Equals('-'))
             {
                 errorInput.Append(
                     "This converter cannot handle binary values with '-'. Use the IEEE converter if handling negative binary values.\n");
                 checks[2] = true;
             }
+
+        //Max Value
+        if (input.Length > 50)
+        {
+            errorInput.Append("Cannot enter a value greater than 50 binary digits.\n");
+            checks[5] = true;
         }
-        
+
+
         //Check is there are letters or illegal symbols
-        foreach (var c in input)
-            if (!char.IsDigit(c) && !c.Equals('.') && !c.Equals(' '))
-                checks[3] = true;
+        foreach (var c in input.Where(c => !char.IsDigit(c) && !c.Equals('.') && !c.Equals(' ')))
+            checks[3] = true;
 
         if (checks[3])
             errorInput.Append("Decimal numbers cannot contain letters or illegal symbols.\n");
 
         //Check if not a 0 or 1
-        foreach(var c in input)
-            if(!c.Equals('0') && !c.Equals('1') && !c.Equals(' ') && !c.Equals('.'))
+        foreach (var c in input)
+            if (!c.Equals('0') && !c.Equals('1') && !c.Equals(' ') && !c.Equals('.'))
                 checks[4] = true;
 
         if (checks[4])
             errorInput.Append("Binary values can only consist of '0's and '1's.\n");
 
-        if (!checks[0] && !checks[1] && !checks[2] && !checks[3] && !checks[4])
+        if (!checks[0] && !checks[1] && !checks[2] && !checks[3] && !checks[4] && !checks[5])
             isValid = true;
 
         if (isValid)
@@ -378,10 +536,6 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         errorInput.Append("Press any key to try again...");
         //Final result
         return isValid ? cleanedInput.ToString() : errorInput.ToString();
-
-
-
-
     }
 
     #endregion

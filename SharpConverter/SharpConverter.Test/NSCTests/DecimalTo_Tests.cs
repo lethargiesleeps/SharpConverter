@@ -4,11 +4,12 @@ namespace SharpConverter.Debug.NSCTests;
 
 public static class DecimalTo_Tests
 {
-    private static NumberSystemConverter _nsc = new NumberSystemConverter();
+    private static readonly NumberSystemConverter _nsc = new();
+
     public static void DecimalToBinary()
     {
         Console.WriteLine("Enter decimal number.");
-        string? input = Console.ReadLine();
+        var input = Console.ReadLine();
         if (!string.IsNullOrEmpty(input))
             Console.WriteLine(_nsc.DecimalToBinary(input));
         else
@@ -20,7 +21,7 @@ public static class DecimalTo_Tests
     public static void DecimalToHexadecimal()
     {
         Console.WriteLine("Enter decimal number.");
-        string? input = Console.ReadLine();
+        var input = Console.ReadLine();
         if (!string.IsNullOrEmpty(input))
             Console.WriteLine(_nsc.DecimalToHexadecimal(input));
         else
@@ -31,7 +32,7 @@ public static class DecimalTo_Tests
     public static void DecimalToOctal()
     {
         Console.WriteLine("Enter decimal number.");
-        string? input = Console.ReadLine();
+        var input = Console.ReadLine();
         if (!string.IsNullOrEmpty(input))
             Console.WriteLine(_nsc.DecimalToOctal(input));
         else

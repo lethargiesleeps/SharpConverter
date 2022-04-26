@@ -1,13 +1,9 @@
-﻿using SharpConverter.Debug.NSCTests;
-using SharpConverter.Debug.UITests;
+﻿using SharpConverter.Debug.UITests;
 
 Console.BackgroundColor = ConsoleColor.Yellow;
 Console.ForegroundColor = ConsoleColor.Black;
+Console.Title = "#Converter Debug Console.";
 Console.Clear();
 
 //TESTS
-while (true)
-{
-    StringValidation_Tests.BinaryInput_Test();
-    
-}
+while (true) StringValidation_Tests.OctalInput_Test();

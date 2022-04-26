@@ -14,9 +14,14 @@ namespace SharpConverter.Shared.Util.Contracts
         string DecimalToHexadecimal(string decimalValue);
         string HexadecimalToDecimal(string hexValue);
 
+        string BinaryToOctal(string binaryValue);
+        string OctalToBinary(string octalValue);
+        string BinaryToHexadecimal(string binaryValue);
+        string HexadecimalToBinary(string hexValue);
+
         string DecimalToOctal(string decimalValue);
         string OctalToDecimal(string octalValue);
         string ReturnOriginalValue(string input);
-        string MultiConverted(CommandState command);
+        
     }
 }
