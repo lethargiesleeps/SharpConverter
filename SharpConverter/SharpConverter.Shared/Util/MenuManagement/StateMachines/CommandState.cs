@@ -19,6 +19,6 @@ public enum CommandState
     OctalToOctal,
     HexadecimalToHexadecimal,
     Error,
-    Help
-
+    Help,
+    Exit
 }

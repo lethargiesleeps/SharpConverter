@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 using SharpConverter.Shared.Util.Contracts;
+using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
 namespace SharpConverter.Shared.Util.Converters;
 
@@ -394,9 +395,29 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         return checks;
     }
 
-    public string ReturnOriginalValue(string input)
+    public string ReturnOriginalValue(CommandState commandState, string input)
     {
-        throw new NotImplementedException();
+        var returnString = new StringBuilder();
+        switch (commandState)
+        {
+            case CommandState.BinaryToBinary:
+                returnString.Append(ValidateBinaryInput(input));
+                break;
+            case CommandState.HexadecimalToHexadecimal:
+                returnString.Append(ValidateHexadecimalInput(input));
+                break;
+            case CommandState.DecimalToDecimal:
+                returnString.Append(ValidateDecimalInput(input));
+                break;
+            case CommandState.OctalToOctal:
+                returnString.Append(ValidateOctalInput(input));
+                break;
+            default:
+                throw new ArgumentException(
+                    "Something went wrong when passing argument commandState of method ReturnOriginalValue() in class NumberSystemConverter.cs");
+        }
+
+        return returnString.ToString();
     }
 
     #endregion

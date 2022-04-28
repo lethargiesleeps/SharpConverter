@@ -6,4 +6,3 @@ Console.Title = "#Converter Debug Console.";
 Console.Clear();
 
 //TESTS
-while (true) HexadecimalTo_Tests.HexToOctal();

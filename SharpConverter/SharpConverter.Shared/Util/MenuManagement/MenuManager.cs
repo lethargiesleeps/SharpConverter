@@ -1,4 +1,4 @@
-﻿using System.Threading.Channels;
+﻿using System.Text;
 using SharpConverter.Shared.Util.Converters;
 using SharpConverter.Shared.Util.MenuManagement.StateMachines;
 
@@ -11,6 +11,7 @@ public class MenuManager
         NumberSystemConverter = numberSystemConverter;
         InNavigation = true;
         MenuState = MenuState.Default;
+        ArgumentHandler = new ArgumentHandler(ArgumentState.Default, NumberSystemConverter);
     }
 
     public MenuManager(bool isConsole, NumberSystemConverter numberSystemConverter) : this(numberSystemConverter)
@@ -24,7 +25,9 @@ public class MenuManager
     public MenuState MenuState { get; private set; }
     public MenuState LastMenuState { get; private set; }
     public ErrorState ErrorState { get; private set; }
+    public ArgumentHandler ArgumentHandler { get; }
     public NumberSystemConverter NumberSystemConverter { get; }
+
 
     public void MainMenu(bool isConsole)
     {
@@ -118,9 +121,9 @@ public class MenuManager
             {
                 var command = "";
                 var arguments = "";
-                var conversion = "";
                 Console.Clear();
                 Console.WriteLine(ConsoleMenuTools.NSCMenu());
+                ArgumentHandler.SetArgumentState(ArgumentState.Default);
                 Input = Console.ReadLine();
                 if (Input == null)
                     throw new NullReferenceException("Hmmm, was null in MenuManager @ Line 136");
@@ -129,84 +132,131 @@ public class MenuManager
                 //TODO: Handle arguments
                 arguments = Tools.SplitConversionCommand(Input, true);
                 var commandState = Tools.ParseCommand(command);
-                var getNumber = "";
 
+                //TODO: Remove, for debugging
+                Console.WriteLine($"Arguments: {arguments}");
+                Console.WriteLine($"Command State: {commandState}");
+                Console.WriteLine($"Command: {command}");
+                Console.WriteLine();
+
+                var getNumber = string.Empty;
+                var nscOutput = new StringBuilder();
                 switch (commandState)
                 {
                     case CommandState.DecimalToBinary:
-                        Console.WriteLine("This will convert decimal to binary");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a DECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.DecimalToBinary(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Binary);
                         break;
                     case CommandState.DecimalToOctal:
-                        Console.WriteLine("This will convert decimal to octal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a DECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.DecimalToOctal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Octal);
                         break;
                     case CommandState.DecimalToHexadecimal:
-                        Console.WriteLine("This will convert decimal to hex");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a DECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.DecimalToHexadecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Hexadecimal);
                         break;
                     case CommandState.BinaryToDecimal:
-                        Console.WriteLine("This will convert binary to decimal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a BINARY number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.BinaryToDecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Decimal);
                         break;
                     case CommandState.BinaryToOctal:
-                        Console.WriteLine("This will convert binary to octal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a BINARY number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.BinaryToOctal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Octal);
                         break;
                     case CommandState.BinaryToHexadecimal:
-                        Console.WriteLine("This will convert binary to hex");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a BINARY number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.BinaryToHexadecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Hexadecimal);
                         break;
                     case CommandState.OctalToDecimal:
-                        Console.WriteLine("This will convert octal to decimal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter an OCTAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.OctalToDecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Decimal);
                         break;
                     case CommandState.OctalToBinary:
-                        Console.WriteLine("This will convert octal to binary");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter an OCTAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.OctalToBinary(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Binary);
                         break;
                     case CommandState.OctalToHexadecimal:
-                        Console.WriteLine("This will convert octal to hex");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter an OCTAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.OctalToHexadecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Hexadecimal);
                         break;
                     case CommandState.HexadecimalToDecimal:
-                        Console.WriteLine("This will convert hex to decimal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a HEXADECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.HexadecimalToDecimal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Decimal);
                         break;
                     case CommandState.HexadecimalToBinary:
-                        Console.WriteLine("This will convert hex to binary");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a HEXADECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.HexadecimalToBinary(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Binary);
                         break;
                     case CommandState.HexadecimalToOctal:
-                        Console.WriteLine("This will hex to octal");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a HEXADECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.HexadecimalToOctal(getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Octal);
                         break;
                     case CommandState.DecimalToDecimal:
-                        Console.WriteLine("This will return original.");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a DECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.ReturnOriginalValue(commandState, getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Decimal);
                         break;
                     case CommandState.BinaryToBinary:
-                        Console.WriteLine("This will return original.");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a BINARY number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.ReturnOriginalValue(commandState, getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Binary);
                         break;
                     case CommandState.OctalToOctal:
-                        Console.WriteLine("This will return original.");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter an OCTAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.ReturnOriginalValue(commandState, getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Octal);
                         break;
                     case CommandState.HexadecimalToHexadecimal:
-                        Console.WriteLine("This will return original.");
-                        Console.ReadKey();
+                        Console.WriteLine("Enter a HEXADECIMAL number:");
+                        getNumber = Console.ReadLine();
+                        nscOutput.Append(NumberSystemConverter.ReturnOriginalValue(commandState, getNumber!));
+                        ArgumentHandler.SetArgumentState(ArgumentState.Hexadecimal);
                         break;
                     case CommandState.Error:
-                        Console.WriteLine("Command was invalid. Type '-help' at any time for more info.");
+                        Console.WriteLine($"{command}");
+                        Console.WriteLine(
+                            "Command was invalid. Type '-help' at any time for more info, or -exit to go back to main menu.");
                         Console.WriteLine("Press any key to continue...");
+                        ArgumentHandler.SetArgumentState(ArgumentState.Error);
                         break;
                     case CommandState.Help:
                         //TODO: Implement when arguments are sorted out
                         break;
+                    case CommandState.Exit:
+                        MenuState = MenuState.Default;
+                        break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
+
+                Console.WriteLine(Tools.ParseArguments(arguments, nscOutput.ToString(), ArgumentHandler));
 
                 Console.ReadKey();
             }
