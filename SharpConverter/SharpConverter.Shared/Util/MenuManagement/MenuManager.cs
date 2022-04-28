@@ -256,7 +256,7 @@ public class MenuManager
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Console.WriteLine(Tools.ParseArguments(arguments, nscOutput.ToString(), ArgumentHandler));
+                Console.WriteLine(Tools.ParseArguments(arguments, nscOutput.ToString(), ArgumentHandler, commandState, getNumber!));
 
                 Console.ReadKey();
             }

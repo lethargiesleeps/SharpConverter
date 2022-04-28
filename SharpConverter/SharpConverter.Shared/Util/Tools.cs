@@ -10,6 +10,9 @@ public static class Tools
 
     public static string SplitDecimal(bool postPoint, string input)
     {
+        if (input.Contains("ERROR"))
+            return input;
+
         var characters = input.ToCharArray();
         var pointIndex = 0;
         var returnValue = "";
@@ -115,6 +118,19 @@ public static class Tools
         if (equalsCount > 1 || arrowCount > 1)
             return "Invalid command structure: Too many '=' or '>' used in command.";
 
+        //Check for too many arguments
+        if (hasArguments)
+        {
+            var tackCount = 0;
+            for(var i = 0; i < input.Length; i++)
+                if(input[i].Equals('-'))
+                    tackCount++;
+
+            if (tackCount > 1)
+                return
+                    "This converter currently only supports one argument at a time. A later version may allow for multiple arguments.";
+        }
+
         #endregion
 
         #region InputCleaningLogicAndSplitting
@@ -157,6 +173,13 @@ public static class Tools
 
         for (var i = preReverse.Length - 1; i >= 0; i--) postReverse.Append(preReverse[i]);
         return postReverse;
+    }
+
+    public static string CleanInput(string input)
+    {
+        var cleanedInput = new StringBuilder();
+        foreach (var c in input.Where(c => !c.Equals(' '))) cleanedInput.Append(c);
+        return cleanedInput.ToString();
     }
 
     #endregion
@@ -244,7 +267,7 @@ public static class Tools
         }
     }
 
-    public static string ParseArguments(string arguments, string nscOutput, ArgumentHandler argumentHandler)
+    public static string ParseArguments(string arguments, string nscOutput, ArgumentHandler argumentHandler, CommandState command, string originalValue)
     {
         StringBuilder returnString = new();
 
@@ -283,8 +306,10 @@ public static class Tools
         if (arguments.Contains("-p"))
             argumentValidations[7] = true;
         //Add extra arguments here if they arise
+
+        //Illegal argument combos
         if (argumentValidations[0])
-            returnString.Append(argumentHandler.ConvertAll(argumentHandler.ArgumentState, nscOutput));
+            returnString.Append(argumentHandler.ConvertAll(command, originalValue));
         if (argumentValidations[1])
             returnString.Append(argumentHandler.GetOnesComplement(argumentHandler.ArgumentState, nscOutput));
         if (argumentValidations[2])

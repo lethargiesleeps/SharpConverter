@@ -15,8 +15,8 @@ public static class ConsoleMenuTools
                      "\n|| first letter of the system you'd like to        ||" +
                      "\n|| to convert to.                                  ||" +
                      "\n|| Add any arguments following a pipe '|'          ||" +
-                     "\n|| For a list of available commands type 'help'.   ||" +
-                     "\n|| To go back to the main menu, type 'back'        ||" +
+                     "\n|| For a list of available commands type '-help'.  ||" +
+                     "\n|| To go back to the main menu, type '-exit'       ||" +
                      "\n||                                                 ||" +
                      "\n|| Example: For decimal to binary                  ||" +
                      "\n|| d => b                                          ||" +

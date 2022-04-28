@@ -20,5 +20,5 @@ public interface IArgumentHandler
     string TrailingZeroPrefix(ArgumentState state, string nscOutput);
     string GetOnesComplement(ArgumentState state, string nscOutput);
     string GetTwosComplement(ArgumentState state, string nscOutput);
-    string ConvertAll(ArgumentState state, string nscOutput);
+    string ConvertAll(CommandState state, string originalValue);
 }

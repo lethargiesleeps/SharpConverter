@@ -18,21 +18,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         ulong afterFloatingPoint = 0;
 
         var input = ValidateDecimalInput(decimalValue);
-        var isValid = false;
 
-        //Validation
-        try
-        {
-            conversionTest = ulong.Parse(input);
-        }
-        catch (Exception e)
-        {
-            isValid = false;
-        }
-        finally
-        {
-            isValid = true;
-        }
+
+        var isValid = !input.Contains("ERROR");
+
 
         if (isValid)
         {
@@ -56,6 +45,9 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
                 finalConversion = Tools.ReverseString(finalConversion);
             }
 
+            if (finalConversion.Equals("") || finalConversion.Equals(" "))
+                return "0";
+
             return finalConversion.ToString();
         }
 
@@ -67,6 +59,7 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         var input = ValidateBinaryInput(binaryValue);
         //Validation
         var isValid = !input.Contains("ERROR");
+
 
         //Conversion Logic
         if (isValid)
@@ -82,6 +75,9 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
                 exponent++;
             }
 
+            if (input.Equals("") || input.Equals(" ") || decimalValue.ToString().Equals("") ||
+                decimalValue.ToString().Equals(" "))
+                return "0";
             return decimalValue.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -96,21 +92,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         ulong beforeFloatingPoint = 0;
         ulong afterFloatingPoint = 0;
         var input = ValidateDecimalInput(decimalValue);
-        var isValid = false;
+        var isValid = !input.Contains("ERROR");
+        if (input.Equals("0"))
+            return "0";
 
-        //Validation
-        try
-        {
-            conversionTest = ulong.Parse(input);
-        }
-        catch (Exception e)
-        {
-            isValid = false;
-        }
-        finally
-        {
-            isValid = true;
-        }
 
         //Conversion logic
         if (isValid)
@@ -145,6 +130,7 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
     {
         var input = ValidateHexadecimalInput(hexValue);
         var isValid = !input.Contains("ERROR");
+
         if (isValid)
         {
             //TODO: Handle floating points
@@ -192,7 +178,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
                 exponent++;
             }
 
-            return decimalValue.ToString(CultureInfo.InvariantCulture);
+            if (input.Equals("") || input.Equals(" ") || decimalValue.ToString().Equals("") ||
+                decimalValue.ToString().Equals(" "))
+                return "0";
+            return decimalValue.ToString();
         }
 
         return input; //Returns error message
@@ -276,21 +265,10 @@ public class NumberSystemConverter : INumberSystemConverter, INSCInputValidator
         ulong beforeFloatingPoint = 0;
         ulong afterFloatingPoint = 0;
         var input = ValidateDecimalInput(decimalValue);
-        var isValid = false;
+        var isValid = !input.Contains("ERROR");
+        if (input.Equals("0"))
+            return "0";
 
-        //Validation
-        try
-        {
-            conversionTest = ulong.Parse(input);
-        }
-        catch (Exception e)
-        {
-            isValid = false;
-        }
-        finally
-        {
-            isValid = true;
-        }
 
         if (isValid)
         {
