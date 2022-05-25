@@ -40,7 +40,28 @@ public class ArgumentHandler : IArgumentHandler
 
     public string SplitByNibble(ArgumentState state, string nscOutput)
     {
-        throw new NotImplementedException();
+        var returnString = new StringBuilder();
+        switch (ArgumentState)
+        {
+            case ArgumentState.Binary:
+                char[,] nibbles = new char[5, nscOutput.Length];
+                break;
+            case ArgumentState.Decimal:
+
+                break;
+            case ArgumentState.Hexadecimal:
+                break;
+            case ArgumentState.Octal:
+                break;
+            case ArgumentState.Default:
+                break;
+            case ArgumentState.Error:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return returnString.ToString();
     }
 
     public string TernaryState(ArgumentState state, string nscOutput)

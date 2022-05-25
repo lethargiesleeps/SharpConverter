@@ -314,6 +314,8 @@ public static class Tools
             returnString.Append(argumentHandler.GetOnesComplement(argumentHandler.ArgumentState, nscOutput));
         if (argumentValidations[2])
             returnString.Append(argumentHandler.GetTwosComplement(argumentHandler.ArgumentState, nscOutput));
+        if (argumentValidations[3])
+            returnString.Append(argumentHandler.SplitByNibble(argumentHandler.ArgumentState, nscOutput));
 
         return returnString.ToString();
     }
